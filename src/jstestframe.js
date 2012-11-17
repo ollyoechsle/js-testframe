@@ -2,7 +2,7 @@ function JSTestFrame(obj) {
     this.obj = obj;
 }
 
-JSTestFrame.prototype.should = function (fn) {
+JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn) {
     fn(this.obj);
     return this;
 };
@@ -27,5 +27,5 @@ function thenThe(elem) {
             return new JSTestFrame(obj);
         }
     }
-    throw new Error("No suitable handler for ", elem);
+    throw new Error("No suitable handler for " + elem);
 }
