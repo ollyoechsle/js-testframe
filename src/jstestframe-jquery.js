@@ -34,6 +34,10 @@ function notBeThere(elem) {
     ok(elem.length == 0, "The element " + elem.selector + " should not be there");
 }
 
+function beThere(elem) {
+    ok(elem.length !== 0, "The element " + elem.selector + " should be there");
+}
+
 function linkTo(expectedUrl) {
     return function (elem) {
         var link = elem.attr("href") || elem.attr("src");

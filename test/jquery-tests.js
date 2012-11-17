@@ -48,7 +48,15 @@
 
         thenThe(jQuery(".foo")).should(notBeThere);
 
-    });   
+    });
+
+    test("present", function () {
+
+        expect(1);
+
+        thenThe(jQuery("<div></div>")).should(beThere);
+
+    });
     
     test("link to", function () {
 
