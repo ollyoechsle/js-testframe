@@ -17,37 +17,33 @@ var beVisible = notHaveClass("hidden"),
 
 function haveText(expectedText) {
     return function (elem) {
-        equal(elem.html(), expectedText,
+        this.equal(elem.html(), expectedText,
               "The element " + elem.selector + " should be have the right text");
     }
 }
 function containText(expectedText) {
     return function (elem) {
         var text = elem.html();
-        ok(text.indexOf(expectedText) >  -1,
+        this.ok(text.indexOf(expectedText) >  -1,
               "The element " + elem.selector + " should contain text `" + expectedText
                   + "` but was `" + text + "`");
     }
 }
 
-function notBeThere(elem) {
-    ok(elem.length == 0, "The element " + elem.selector + " should not be there");
-}
-
 function beThere(elem) {
-    ok(elem.length !== 0, "The element " + elem.selector + " should be there");
+    this.ok(elem.length !== 0, "The element " + elem.selector + " should be there");
 }
 
 function linkTo(expectedUrl) {
     return function (elem) {
         var link = elem.attr("href") || elem.attr("src");
-        equal(link, expectedUrl, "The link should be correct");
+        this.equal(link, expectedUrl, "The link should be correct");
     }
 }
 
 function haveSize(expectedSize) {
     return function (elem) {
-        equal(elem.length, expectedSize);
+        this.equal(elem.length, expectedSize);
     }
 }
 

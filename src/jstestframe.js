@@ -1,18 +1,34 @@
 function JSTestFrame(obj) {
     this.obj = obj;
+    this.not = false;
 }
 
 JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn) {
-    fn(this.obj);
+    this.not = false;
+    fn.call(this, this.obj);
     return this;
 };
 
-JSTestFrame.prototype.ok = function () {
-    window.ok.apply(arguments);
+JSTestFrame.prototype.shouldNotHaveBeen = JSTestFrame.prototype.shouldNot = function (fn) {
+    this.not = true;
+    fn.call(this, this.obj);
+    return this;
 };
 
-JSTestFrame.prototype.equal = function () {
-    window.equal.apply(arguments);
+JSTestFrame.prototype.ok = function (value, message) {
+    if (this.not) {
+        window.ok.call(window, !value, "NOT " + message);
+    } else {
+        window.ok.call(window, value, message);
+    }
+};
+
+JSTestFrame.prototype.equal = function (actual, expected, message) {
+    if (this.not) {
+        window.notEqual.call(window, actual, expected, "NOT " + message);
+    } else {
+        window.equal.call(window, actual, expected, message);
+    }
 };
 
 JSTestFrame.handlers = [];

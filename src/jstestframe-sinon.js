@@ -1,6 +1,6 @@
 function calledTimes(expectedCallCount) {
     return function (fn) {
-        equal(fn.callCount, expectedCallCount,
+        this.equal(fn.callCount, expectedCallCount,
               "The function  should have been called the right number of times");
         fn.previousCallCount = fn.callCount;
     }
@@ -8,7 +8,7 @@ function calledTimes(expectedCallCount) {
 
 function calledAgain(fn) {
     return function (fn) {
-        ok(fn.callCount > fn.previousCallCount, "The function should have been called again");
+        this.ok(fn.callCount > fn.previousCallCount, "The function should have been called again");
         fn.previousCallCount = fn.callCount;
     }
 }

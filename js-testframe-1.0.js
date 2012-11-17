@@ -2,19 +2,35 @@
 
 function JSTestFrame(obj) {
     this.obj = obj;
+    this.not = false;
 }
 
 JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn) {
-    fn(this.obj);
+    this.not = false;
+    fn.call(this, this.obj);
     return this;
 };
 
-JSTestFrame.prototype.ok = function () {
-    window.ok.apply(arguments);
+JSTestFrame.prototype.shouldNotHaveBeen = JSTestFrame.prototype.shouldNot = function (fn) {
+    this.not = true;
+    fn.call(this, this.obj);
+    return this;
 };
 
-JSTestFrame.prototype.equal = function () {
-    window.equal.apply(arguments);
+JSTestFrame.prototype.ok = function (value, message) {
+    if (this.not) {
+        window.ok.call(window, !value, "NOT " + message);
+    } else {
+        window.ok.call(window, value, message);
+    }
+};
+
+JSTestFrame.prototype.equal = function (actual, expected, message) {
+    if (this.not) {
+        window.notEqual.call(window, actual, expected, "NOT " + message);
+    } else {
+        window.equal.call(window, actual, expected, message);
+    }
 };
 
 JSTestFrame.handlers = [];
@@ -53,37 +69,33 @@ var beVisible = notHaveClass("hidden"),
 
 function haveText(expectedText) {
     return function (elem) {
-        equal(elem.html(), expectedText,
+        this.equal(elem.html(), expectedText,
               "The element " + elem.selector + " should be have the right text");
     }
 }
 function containText(expectedText) {
     return function (elem) {
         var text = elem.html();
-        ok(text.indexOf(expectedText) >  -1,
+        this.ok(text.indexOf(expectedText) >  -1,
               "The element " + elem.selector + " should contain text `" + expectedText
                   + "` but was `" + text + "`");
     }
 }
 
-function notBeThere(elem) {
-    ok(elem.length == 0, "The element " + elem.selector + " should not be there");
-}
-
 function beThere(elem) {
-    ok(elem.length !== 0, "The element " + elem.selector + " should be there");
+    this.ok(elem.length !== 0, "The element " + elem.selector + " should be there");
 }
 
 function linkTo(expectedUrl) {
     return function (elem) {
         var link = elem.attr("href") || elem.attr("src");
-        equal(link, expectedUrl, "The link should be correct");
+        this.equal(link, expectedUrl, "The link should be correct");
     }
 }
 
 function haveSize(expectedSize) {
     return function (elem) {
-        equal(elem.length, expectedSize);
+        this.equal(elem.length, expectedSize);
     }
 }
 
@@ -94,7 +106,7 @@ JSTestFrame.addHandler(function (obj) {
 });
 function calledTimes(expectedCallCount) {
     return function (fn) {
-        equal(fn.callCount, expectedCallCount,
+        this.equal(fn.callCount, expectedCallCount,
               "The function  should have been called the right number of times");
         fn.previousCallCount = fn.callCount;
     }
@@ -102,7 +114,7 @@ function calledTimes(expectedCallCount) {
 
 function calledAgain(fn) {
     return function (fn) {
-        ok(fn.callCount > fn.previousCallCount, "The function should have been called again");
+        this.ok(fn.callCount > fn.previousCallCount, "The function should have been called again");
         fn.previousCallCount = fn.callCount;
     }
 }
