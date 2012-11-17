@@ -25,15 +25,11 @@ Sinon JS
 --------
 
 ```
-given(fn = sinon.stub());
+sinon.stub(jQuery, "ajax");
 
-when(fn.call(window));
+...
 
-thenThe(fn).shouldHaveBeen(calledOnce);
-
-when(fn.call(window));
-
-thenThe(fn).shouldHaveBeen(calledAgain);
+then(jQuery.ajax).shouldHaveBeen(calledOnce);
 ```
 
 

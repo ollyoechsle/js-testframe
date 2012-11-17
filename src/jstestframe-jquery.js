@@ -1,14 +1,14 @@
 function haveClass(className) {
     return function (elem) {
         this.ok(elem.hasClass(className),
-           "The element " + elem.selector + " should have class `" + className + "`");
+                "The element " + elem.selector + " should have class `" + className + "`");
     }
 }
 
 function notHaveClass(className) {
     return function (elem) {
         this.ok(!elem.hasClass(className),
-           "The element " + elem.selector + " should NOT have class `" + className + "`");
+                "The element " + elem.selector + " should NOT have class `" + className + "`");
     }
 }
 
@@ -19,6 +19,14 @@ function haveText(expectedText) {
     return function (elem) {
         equal(elem.html(), expectedText,
               "The element " + elem.selector + " should be have the right text");
+    }
+}
+function containText(expectedText) {
+    return function (elem) {
+        var text = elem.html();
+        ok(text.indexOf(expectedText) >  -1,
+              "The element " + elem.selector + " should contain text `" + expectedText
+                  + "` but was `" + text + "`");
     }
 }
 
@@ -39,7 +47,7 @@ function haveSize(expectedSize) {
     }
 }
 
-JSTestFrame.addHandler(function(obj) {
+JSTestFrame.addHandler(function (obj) {
     if (obj.jquery) {
         return jQuery(obj);
     }

@@ -34,9 +34,11 @@
 
     test("has text", function () {
 
-        expect(1);
+        expect(2);
 
-        thenThe(jQuery("<div'>Hello, World</div>")).should(haveText("Hello, World"));
+        thenThe(jQuery("<div'>Hello, World</div>"))
+            .should(haveText("Hello, World"))
+            .should(containText("World"));
 
     });
 
