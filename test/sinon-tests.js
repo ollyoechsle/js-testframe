@@ -8,17 +8,34 @@
         }
     });
 
-    test("not called", function () {
+    test("call count", function () {
 
-        var fn = sinon.stub();
+        expect(2);
+
+        given(fn = sinon.stub());
 
         thenThe(fn).shouldHaveBeen(notCalled);
 
-        fn();
+        when(fn.call(window));
 
         thenThe(fn).shouldHaveBeen(calledOnce);
 
     });
 
+    test("called again", function () {
+
+        given(fn = sinon.stub());
+
+        when(fn.call(window));
+
+        thenThe(fn).shouldHaveBeen(calledOnce);
+
+        when(fn.call(window));
+
+        thenThe(fn).shouldHaveBeen(calledAgain);
+
+    });
+
+    var fn;
 
 })();
