@@ -7,9 +7,9 @@ function calledTimes(expectedCallCount) {
 }
 
 function calledAgain(fn) {
-    var pcc = fn.previousCallCount || 0;
-    this.ok(fn.callCount > pcc,
-            "The function should have been called again (more than " + pcc + " times");
+    var previousCallCount = fn.previousCallCount || 0;
+    this.ok(fn.callCount > previousCallCount,
+            "The function should have been called again (more than " + previousCallCount + " times)");
     fn.previousCallCount = fn.callCount;
 }
 
