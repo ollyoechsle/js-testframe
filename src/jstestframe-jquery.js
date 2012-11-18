@@ -18,15 +18,15 @@ var beVisible = notHaveClass("hidden"),
 function haveText(expectedText) {
     return function (elem) {
         this.equal(elem.html(), expectedText,
-              "The element " + elem.selector + " should be have the right text");
+                   "The element " + elem.selector + " should be have the right text");
     }
 }
 function containText(expectedText) {
     return function (elem) {
         var text = elem.html();
-        this.ok(text.indexOf(expectedText) >  -1,
-              "The element " + elem.selector + " should contain text `" + expectedText
-                  + "` but was `" + text + "`");
+        this.ok(text.indexOf(expectedText) > -1,
+                "The element " + elem.selector + " should contain text `" + expectedText
+                    + "` but was `" + text + "`");
     }
 }
 
@@ -44,6 +44,21 @@ function linkTo(expectedUrl) {
 function haveSize(expectedSize) {
     return function (elem) {
         this.equal(elem.length, expectedSize);
+    }
+}
+
+function haveAttribute(expectedAttr, expectedValue) {
+    return function (elem) {
+        if (expectedValue !== undefined) {
+            this.equal(elem.attr(expectedAttr), expectedValue,
+                       "The element " + elem.selector + " should have attribute `" + expectedAttr
+                           + "`=`" + expectedValue);
+        } else {
+            var attr = elem.attr(expectedAttr);
+            this.ok(typeof attr !== 'undefined' && attr !== false,
+                    "The element " + elem.selector + " should have attribute `" + expectedAttr
+                        + "`");
+        }
     }
 }
 

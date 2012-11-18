@@ -61,7 +61,7 @@
         thenThe(jQuery("<div></div>")).should(beThere);
 
     });
-    
+
     test("link to", function () {
 
         expect(2);
@@ -79,6 +79,28 @@
         thenThe(jQuery("<ul><li>Apples</li><li>Bananas</li><li>Carrots</li></ul> ").find("li"))
             .should(haveSize(3))
             .shouldNot(haveSize(4));
+
+    });
+
+    test("attr", function () {
+
+        expect(4);
+
+        thenThe(jQuery("<p data-foo='123'> "))
+            .should(haveAttribute("data-foo"))
+            .shouldNot(haveAttribute("data-bar"))
+            .should(haveAttribute("data-foo", "123"))
+            .shouldNot(haveAttribute("data-foo", "456"))
+
+    });
+
+    test("undefined attr", function () {
+
+        expect(2);
+
+        thenThe(jQuery("<p data-foo='0'> "))
+            .should(haveAttribute("data-foo"))
+            .should(haveAttribute("data-foo", "0"))
 
     });
 

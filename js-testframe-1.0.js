@@ -70,15 +70,15 @@ var beVisible = notHaveClass("hidden"),
 function haveText(expectedText) {
     return function (elem) {
         this.equal(elem.html(), expectedText,
-              "The element " + elem.selector + " should be have the right text");
+                   "The element " + elem.selector + " should be have the right text");
     }
 }
 function containText(expectedText) {
     return function (elem) {
         var text = elem.html();
-        this.ok(text.indexOf(expectedText) >  -1,
-              "The element " + elem.selector + " should contain text `" + expectedText
-                  + "` but was `" + text + "`");
+        this.ok(text.indexOf(expectedText) > -1,
+                "The element " + elem.selector + " should contain text `" + expectedText
+                    + "` but was `" + text + "`");
     }
 }
 
@@ -99,6 +99,21 @@ function haveSize(expectedSize) {
     }
 }
 
+function haveAttribute(expectedAttr, expectedValue) {
+    return function (elem) {
+        if (expectedValue !== undefined) {
+            this.equal(elem.attr(expectedAttr), expectedValue,
+                       "The element " + elem.selector + " should have attribute `" + expectedAttr
+                           + "`=`" + expectedValue);
+        } else {
+            var attr = elem.attr(expectedAttr);
+            this.ok(typeof attr !== 'undefined' && attr !== false,
+                    "The element " + elem.selector + " should have attribute `" + expectedAttr
+                        + "`");
+        }
+    }
+}
+
 JSTestFrame.addHandler(function (obj) {
     if (obj.jquery) {
         return jQuery(obj);
@@ -113,9 +128,9 @@ function calledTimes(expectedCallCount) {
 }
 
 function calledAgain(fn) {
-    var pcc = fn.previousCallCount || 0;
-    this.ok(fn.callCount > pcc,
-            "The function should have been called again (more than " + pcc + " times");
+    var previousCallCount = fn.previousCallCount || 0;
+    this.ok(fn.callCount > previousCallCount,
+            "The function should have been called again (more than " + previousCallCount + " times)");
     fn.previousCallCount = fn.callCount;
 }
 
