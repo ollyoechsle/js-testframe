@@ -104,4 +104,14 @@
 
     });
 
+    test("have value", function () {
+
+        expect(2);
+
+        thenThe(jQuery("<select><option value='1'></option><option value='2' selected></option></select>"))
+            .should(haveValue("2"))
+            .shouldNot(haveValue("1"))
+
+    });
+
 })();

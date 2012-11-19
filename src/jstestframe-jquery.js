@@ -47,6 +47,12 @@ function haveSize(expectedSize) {
     }
 }
 
+function haveValue(expectedValue) {
+    return function (elem) {
+        this.equal(elem.val(), expectedValue, "Expected " + elem.selector + " to have value `" + expectedValue + "`");
+    }
+}
+
 function haveAttribute(expectedAttr, expectedValue) {
     return function (elem) {
         if (expectedValue !== undefined) {

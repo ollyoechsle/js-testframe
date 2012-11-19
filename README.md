@@ -34,6 +34,7 @@ Full list of jQuery assertions:
 * beThere()
 * linkTo(String)
 * haveSize(Number)
+* haveValue(String)
 
 Sinon JS
 --------
