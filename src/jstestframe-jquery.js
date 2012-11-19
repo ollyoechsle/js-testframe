@@ -43,7 +43,7 @@ function linkTo(expectedUrl) {
 
 function haveSize(expectedSize) {
     return function (elem) {
-        this.equal(elem.length, expectedSize);
+        this.equal(elem.length, expectedSize, "Expected " + elem.selector + " to find " + expectedSize + " elements");
     }
 }
 
@@ -52,7 +52,7 @@ function haveAttribute(expectedAttr, expectedValue) {
         if (expectedValue !== undefined) {
             this.equal(elem.attr(expectedAttr), expectedValue,
                        "The element " + elem.selector + " should have attribute `" + expectedAttr
-                           + "`=`" + expectedValue);
+                           + "`=`" + expectedValue + "`");
         } else {
             var attr = elem.attr(expectedAttr);
             this.ok(typeof attr !== 'undefined' && attr !== false,
