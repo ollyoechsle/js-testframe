@@ -31,7 +31,7 @@ Full list of jQuery assertions:
 * haveAttribute(String)
 * haveAttribute(String, Value)
 * haveClass(String)
-* beThere()
+* beThere
 * linkTo(String)
 * haveSize(Number)
 * haveValue(String)
@@ -49,9 +49,9 @@ then(jQuery.ajax).shouldHaveBeen(calledOnce);
 
 Full list of Sinon assertions:
 
-* notCalled()
-* calledOnce()
-* calledTwice()
+* notCalled
+* calledOnce
+* calledTwice
 * calledTimes(Number)
 * calledAgain()
 
