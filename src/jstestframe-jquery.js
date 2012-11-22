@@ -15,10 +15,15 @@ function notHaveClass(className) {
 var beVisible = notHaveClass("hidden"),
     beHidden = haveClass("hidden");
 
-function haveText(expectedText) {
+function haveText() {
+    var texts = arguments;
     return function (elem) {
-        this.equal(elem.html(), expectedText,
-                   "The element " + elem.selector + " should be have the right text");
+        for (var i = 0; i < texts.length; i++) {
+            var expectedText = texts[i];
+            this.equal(elem.eq(i).html(), expectedText,
+                       "The element " + elem.selector + " should be have the right text");
+        }
+
     }
 }
 function containText(expectedText) {
@@ -43,13 +48,15 @@ function linkTo(expectedUrl) {
 
 function haveSize(expectedSize) {
     return function (elem) {
-        this.equal(elem.length, expectedSize, "Expected " + elem.selector + " to find " + expectedSize + " elements");
+        this.equal(elem.length, expectedSize,
+                   "Expected " + elem.selector + " to find " + expectedSize + " elements");
     }
 }
 
 function haveValue(expectedValue) {
     return function (elem) {
-        this.equal(elem.val(), expectedValue, "Expected " + elem.selector + " to have value `" + expectedValue + "`");
+        this.equal(elem.val(), expectedValue,
+                   "Expected " + elem.selector + " to have value `" + expectedValue + "`");
     }
 }
 

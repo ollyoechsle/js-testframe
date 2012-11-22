@@ -46,6 +46,15 @@
 
     });
 
+    test("has text array", function () {
+
+        expect(3);
+
+        thenThe(jQuery("<div><p>Apples</p><p>Bananas</p><p>Cherries</p></div>").find("p"))
+            .should(haveText("Apples", "Bananas", "Cherries"))
+
+    });
+
     test("not there", function () {
 
         expect(1);

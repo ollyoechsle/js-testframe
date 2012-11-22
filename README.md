@@ -26,7 +26,13 @@ thenThe(jQuery("<div class='hidden'></div>")).should(beHidden);
 
 Full list of jQuery assertions:
 
-* haveText(String)
+* haveText(String...)
+
+```
+thenThe(jQuery("<div><p>Apples</p><p>Bananas</p><p>Cherries</p></div>").find("p"))
+    .should(haveText("Apples", "Bananas", "Cherries"))
+```
+
 * containText(String)
 * haveAttribute(String)
 * haveAttribute(String, Value)
