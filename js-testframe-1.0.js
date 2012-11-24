@@ -5,15 +5,17 @@ function JSTestFrame(obj) {
     this.not = false;
 }
 
-JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn) {
+JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn, mapper) {
+    mapper = mapper || JSTestFrame.DO_NOTHING;
     this.not = false;
-    fn.call(this, this.obj);
+    fn.call(this, mapper(this.obj));
     return this;
 };
 
-JSTestFrame.prototype.shouldNotHaveBeen = JSTestFrame.prototype.shouldNot = function (fn) {
+JSTestFrame.prototype.shouldNotHaveBeen = JSTestFrame.prototype.shouldNot = function (fn, mapper) {
+    mapper = mapper || JSTestFrame.DO_NOTHING;
     this.not = true;
-    fn.call(this, this.obj);
+    fn.call(this, mapper(this.obj));
     return this;
 };
 
@@ -31,6 +33,10 @@ JSTestFrame.prototype.equal = function (actual, expected, message) {
     } else {
         window.equal.call(window, actual, expected, message);
     }
+};
+
+JSTestFrame.DO_NOTHING = function(val) {
+    return val;
 };
 
 JSTestFrame.handlers = [];
@@ -129,6 +135,32 @@ function haveAttribute() {
                     "The element " + elem.selector + " should have attribute `" + expectedAttr
                         + "`");
         }
+    }
+}
+
+function haveStyle() {
+    var expectedAttr = arguments[0],
+        expectedValues = Array.prototype.slice.call(arguments, 1);
+    return function (elem) {
+        if (expectedValues.length) {
+            for (var i = 0; i < expectedValues.length; i++) {
+                this.equal(elem.eq(i).css(expectedAttr), expectedValues[i],
+                           "The element " + elem.eq(i).selector + " should have style `"
+                               + expectedAttr
+                               + "`:`" + expectedValues[i] + "`");
+            }
+        } else {
+            var actualStyle = elem.css(expectedAttr);
+            this.ok(typeof actualStyle !== 'undefined' && actualStyle !== false,
+                    "The element " + elem.selector + " should have attribute `" + expectedAttr
+                        + "`");
+        }
+    }
+}
+
+function inElement(selector) {
+    return function(jObj) {
+        return jObj.find(selector);
     }
 }
 

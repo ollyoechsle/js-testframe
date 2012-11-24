@@ -64,6 +64,46 @@
 
     });
 
+    var tableSnippet = jQuery('<tbody>' +
+                              '<tr>' +
+                              '    <td>Apple</td>' +
+                              '    <td><span class="icon" style="background-color: green"></span></td>'
+                                  +
+                              '</tr>' +
+                              '<tr>' +
+                              '    <td>Banana</td>' +
+                              '    <td><span class="icon" style="background-color: yellow"></span></td>'
+                                  +
+                              '</tr>' +
+                              '<tr>' +
+                              '    <td>Orange</td>' +
+                              '    <td><span class="icon" style="background-color: orange"></span></td>'
+                                  +
+                              '</tr>' +
+                              '</tbody>');
+
+    test("has stuff within other stuff", function () {
+
+        expect(6);
+
+        thenThe(tableSnippet.find('tr td:nth-child(1)'))
+            .should(haveText("Apple", "Banana", "Orange"));
+
+        thenThe(tableSnippet.find('tr .icon'))
+            .should(haveStyle("background-color", "green", "yellow", "orange"))
+
+    });
+
+    test("has stuff within other stuff", function () {
+
+        expect(6);
+
+        thenThe(tableSnippet.find('tr'))
+            .should(haveText("Apple", "Banana", "Orange"), inElement("td:first-child"))
+            .should(haveStyle("background-color", "green", "yellow", "orange"), inElement(".icon"));
+
+    });
+
     test("not there", function () {
 
         expect(1);

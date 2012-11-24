@@ -3,15 +3,17 @@ function JSTestFrame(obj) {
     this.not = false;
 }
 
-JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn) {
+JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn, mapper) {
+    mapper = mapper || JSTestFrame.DO_NOTHING;
     this.not = false;
-    fn.call(this, this.obj);
+    fn.call(this, mapper(this.obj));
     return this;
 };
 
-JSTestFrame.prototype.shouldNotHaveBeen = JSTestFrame.prototype.shouldNot = function (fn) {
+JSTestFrame.prototype.shouldNotHaveBeen = JSTestFrame.prototype.shouldNot = function (fn, mapper) {
+    mapper = mapper || JSTestFrame.DO_NOTHING;
     this.not = true;
-    fn.call(this, this.obj);
+    fn.call(this, mapper(this.obj));
     return this;
 };
 
@@ -29,6 +31,10 @@ JSTestFrame.prototype.equal = function (actual, expected, message) {
     } else {
         window.equal.call(window, actual, expected, message);
     }
+};
+
+JSTestFrame.DO_NOTHING = function(val) {
+    return val;
 };
 
 JSTestFrame.handlers = [];

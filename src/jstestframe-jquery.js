@@ -80,6 +80,32 @@ function haveAttribute() {
     }
 }
 
+function haveStyle() {
+    var expectedAttr = arguments[0],
+        expectedValues = Array.prototype.slice.call(arguments, 1);
+    return function (elem) {
+        if (expectedValues.length) {
+            for (var i = 0; i < expectedValues.length; i++) {
+                this.equal(elem.eq(i).css(expectedAttr), expectedValues[i],
+                           "The element " + elem.eq(i).selector + " should have style `"
+                               + expectedAttr
+                               + "`:`" + expectedValues[i] + "`");
+            }
+        } else {
+            var actualStyle = elem.css(expectedAttr);
+            this.ok(typeof actualStyle !== 'undefined' && actualStyle !== false,
+                    "The element " + elem.selector + " should have attribute `" + expectedAttr
+                        + "`");
+        }
+    }
+}
+
+function inElement(selector) {
+    return function(jObj) {
+        return jObj.find(selector);
+    }
+}
+
 JSTestFrame.addHandler(function (obj) {
     if (obj.jquery) {
         return jQuery(obj);
