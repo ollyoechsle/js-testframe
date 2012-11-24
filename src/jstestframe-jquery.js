@@ -60,51 +60,47 @@ function haveValue(expectedValue) {
     }
 }
 
-function haveAttribute() {
-    var expectedAttr = arguments[0],
-        expectedValues = Array.prototype.slice.call(arguments, 1);
-    return function (elem) {
-        if (expectedValues.length) {
-            for (var i = 0; i < expectedValues.length; i++) {
-                this.equal(elem.eq(i).attr(expectedAttr), expectedValues[i],
-                           "The element " + elem.eq(i).selector + " should have attribute `"
-                               + expectedAttr
-                               + "`=`" + expectedValues[i] + "`");
-            }
-        } else {
-            var actualAttr = elem.attr(expectedAttr);
-            this.ok(typeof actualAttr !== 'undefined' && actualAttr !== false,
-                    "The element " + elem.selector + " should have attribute `" + expectedAttr
-                        + "`");
-        }
-    }
-}
-
-function haveStyle() {
-    var expectedAttr = arguments[0],
-        expectedValues = Array.prototype.slice.call(arguments, 1);
-    return function (elem) {
-        if (expectedValues.length) {
-            for (var i = 0; i < expectedValues.length; i++) {
-                this.equal(elem.eq(i).css(expectedAttr), expectedValues[i],
-                           "The element " + elem.eq(i).selector + " should have style `"
-                               + expectedAttr
-                               + "`:`" + expectedValues[i] + "`");
-            }
-        } else {
-            var actualStyle = elem.css(expectedAttr);
-            this.ok(typeof actualStyle !== 'undefined' && actualStyle !== false,
-                    "The element " + elem.selector + " should have attribute `" + expectedAttr
-                        + "`");
-        }
-    }
-}
-
 function inElement(selector) {
-    return function(jObj) {
+    return function (jObj) {
         return jObj.find(selector);
     }
 }
+
+JSTestFrame.jquery = {
+    createAssertable:function (name, fn) {
+        return function () {
+            var expectedAttr = arguments[0],
+                expectedValues = Array.prototype.slice.call(arguments, 1);
+            return function (elem) {
+                var actual;
+                if (expectedValues.length) {
+                    for (var i = 0; i < expectedValues.length; i++) {
+                        actual = fn(elem.eq(i), expectedAttr);
+                        this.equal(actual, expectedValues[i],
+                                   "The element " + elem.eq(i).selector + " should have "
+                                       + name + " `"
+                                       + expectedAttr
+                                       + "`:`" + expectedValues[i] + "`");
+                    }
+                } else {
+                    actual = fn(elem, expectedAttr);
+                    this.ok(typeof actual !== 'undefined' && actual !== false,
+                            "The element " + elem.selector + " should have " + name + " `"
+                                + expectedAttr
+                                + "`");
+                }
+            }
+        }
+    }
+};
+
+window.haveStyle = JSTestFrame.jquery.createAssertable("style", function (jObj, key) {
+    return jObj.css(key)
+});
+
+window.haveAttribute = JSTestFrame.jquery.createAssertable("attribute", function (jObj, key) {
+    return jObj.attr(key)
+});
 
 JSTestFrame.addHandler(function (obj) {
     if (obj.jquery) {

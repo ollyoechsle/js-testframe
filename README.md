@@ -1,7 +1,7 @@
 JS-TestFrame
 ============
 
-A set of sugary assertions for helping with your unit tests.
+A set of sugary assertions that help you write all those tests you couldn't be bothered with before.
 
 TestFrame provides simple, chainable should and shouldNot calls, into which you plug an appropriate
 assertion for the object you want.
@@ -40,7 +40,7 @@ thenThe(jQuery("<div><p>Apples</p><p>Bananas</p><p>Cherries</p></div>").find("p"
     .should(haveText("Apples", "Bananas", "Cherries"))
 ```
 
-* containText(String)
+* containText(Value)
 * haveAttribute(String)
 * haveAttribute(String, Value)
 * haveAttribute(String, Values...)
@@ -59,13 +59,14 @@ thenThe(jQuery('<tr><th data-id="1"></th><th data-id="2"></th><th data-id="3"></
 * haveStyle(CssProperty, Values...)
 * haveValue(String)
 
-jQuery Mappers
---------------
+Mappers
+-------
 
-Mappers are little preprocessors which are run before the element is passed to the assertable. They
- allow you to make more readable, shorter assertions.
+Mappers are little preprocessors which map the subject of the assertion before it is checked.
 
-For example:
+They allow you to make more readable, shorter assertions.
+
+Given, for example:
 
 ```
 <tbody>
@@ -84,8 +85,7 @@ For example:
 </tbody>
 ```
 
-If you want to inspect the label and the colour, then you can some gynmastics with CSS selectors,
-and you need to create
+If you want to inspect both the first cell text and the colour of the icon, then could create two TestFrames:
 
 ```
 thenThe(jQuery('tbody tr td:first-child'))
@@ -95,7 +95,7 @@ thenThe(jQuery('tbody tr .icon'))
     .should(haveStyle("background-color", "green", "yellow", "orange"))
 ```
 
-But with mappers you can reuse and make things easier to read and continue to chain your shoulds together.
+With mappers you can reuse a single TestFrame:
 
 ```
 thenThe(jQuery('tbody tr'))
@@ -106,6 +106,8 @@ thenThe(jQuery('tbody tr'))
 
 Sinon JS
 --------
+
+TestFrame also provides assertions for mocks, stubs and spys made by SinonJS (see sinonjs.org)
 
 ```
 sinon.stub(jQuery, "ajax");
@@ -122,6 +124,17 @@ Full list of Sinon assertions:
 * calledTwice
 * calledTimes(Number)
 * calledAgain()
+
+Custom Assertions
+--------------
+
+Making a new simple jQuery assertion is easy:
+
+```
+window.haveAttribute = JSTestFrame.jquery.createAssertable("attribute", function (jObj, key) {
+    return jObj.attr(key)
+});
+```
 
 
 
