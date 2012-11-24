@@ -112,15 +112,20 @@ function haveValue(expectedValue) {
     }
 }
 
-function haveAttribute(expectedAttr, expectedValue) {
+function haveAttribute() {
+    var expectedAttr = arguments[0],
+        expectedValues = Array.prototype.slice.call(arguments, 1);
     return function (elem) {
-        if (expectedValue !== undefined) {
-            this.equal(elem.attr(expectedAttr), expectedValue,
-                       "The element " + elem.selector + " should have attribute `" + expectedAttr
-                           + "`=`" + expectedValue + "`");
+        if (expectedValues.length) {
+            for (var i = 0; i < expectedValues.length; i++) {
+                this.equal(elem.eq(i).attr(expectedAttr), expectedValues[i],
+                           "The element " + elem.eq(i).selector + " should have attribute `"
+                               + expectedAttr
+                               + "`=`" + expectedValues[i] + "`");
+            }
         } else {
-            var attr = elem.attr(expectedAttr);
-            this.ok(typeof attr !== 'undefined' && attr !== false,
+            var actualAttr = elem.attr(expectedAttr);
+            this.ok(typeof actualAttr !== 'undefined' && actualAttr !== false,
                     "The element " + elem.selector + " should have attribute `" + expectedAttr
                         + "`");
         }

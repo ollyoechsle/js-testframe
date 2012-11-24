@@ -55,6 +55,15 @@
 
     });
 
+    test("has attr array", function () {
+
+        expect(3);
+
+        thenThe(jQuery('<tr><th data-id="1"></th><th data-id="2"></th><th data-id="3"></th></tr>').find("th"))
+            .should(haveAttribute("data-id", "1", "2", "3"))
+
+    });
+
     test("not there", function () {
 
         expect(1);
