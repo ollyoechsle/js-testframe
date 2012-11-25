@@ -21,6 +21,15 @@ thenThe(jQuery obj | sinon stub)
     [.should..]
 ```
 
+You can use .and to repeat the previous should or shouldNot, for example:
+
+```
+thenThe(fn)
+    .shouldHaveBeen(calledAgain)
+    .and(calledWith(5, 6, 7));
+```
+
+
 jQuery Assertions
 -----------------
 
@@ -95,7 +104,7 @@ thenThe(jQuery('tbody tr .icon'))
     .should(haveStyle("background-color", "green", "yellow", "orange"))
 ```
 
-With mappers you can reuse a single TestFrame:
+With the inElement mapper you can reuse a single TestFrame:
 
 ```
 thenThe(jQuery('tbody tr'))
@@ -103,6 +112,9 @@ thenThe(jQuery('tbody tr'))
     .should(haveStyle("background-color", "green", "yellow", "orange"), inElement(".icon"));
 
 ```
+
+Available mappers:
+* inElement(CSSSelector) - equivalent to jQuery.find
 
 Sinon JS
 --------
@@ -124,6 +136,7 @@ Full list of Sinon assertions:
 * calledTwice
 * calledTimes(Number)
 * calledAgain()
+* calledWith(Arguments...)
 
 Custom Assertions
 --------------

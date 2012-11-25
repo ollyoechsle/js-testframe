@@ -3,11 +3,13 @@
 function JSTestFrame(obj) {
     this.obj = obj;
     this.not = false;
+    this.and = this.should;
 }
 
 JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn, mapper) {
     mapper = mapper || JSTestFrame.DO_NOTHING;
     this.not = false;
+    this.and = this.should;
     fn.call(this, mapper(this.obj));
     return this;
 };
@@ -15,6 +17,7 @@ JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (
 JSTestFrame.prototype.shouldNotHaveBeen = JSTestFrame.prototype.shouldNot = function (fn, mapper) {
     mapper = mapper || JSTestFrame.DO_NOTHING;
     this.not = true;
+    this.and = this.shouldNot;
     fn.call(this, mapper(this.obj));
     return this;
 };
@@ -165,6 +168,11 @@ JSTestFrame.addHandler(function (obj) {
         return jQuery(obj);
     }
 });
+
+function theUserClicksOn(elem) {
+    jQuery(elem).trigger("click");
+}
+
 function calledTimes(expectedCallCount) {
     return function (fn) {
         this.equal(fn.callCount, expectedCallCount,
@@ -183,6 +191,18 @@ function calledAgain(fn) {
 var notCalled = calledTimes(0),
     calledOnce = calledTimes(1),
     calledTwice = calledTimes(2);
+
+function calledWith() {
+    var expectedArguments = arguments;
+    return function (fn) {
+        this.ok(fn.called, "The fn should have been called");
+        for (var i = 0; i < expectedArguments.length; i++) {
+            this.equal(fn.getCall(fn.callCount - 1).args[i], expectedArguments[i],
+                       "The last call's argument at [" + i + "] should be correct");
+        }
+        fn.previousCallCount = fn.callCount;
+    }
+}
 
 JSTestFrame.addHandler(function (obj) {
     if (typeof obj === "function" && obj.callCount !== undefined) {

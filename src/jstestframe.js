@@ -1,11 +1,13 @@
 function JSTestFrame(obj) {
     this.obj = obj;
     this.not = false;
+    this.and = this.should;
 }
 
 JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (fn, mapper) {
     mapper = mapper || JSTestFrame.DO_NOTHING;
     this.not = false;
+    this.and = this.should;
     fn.call(this, mapper(this.obj));
     return this;
 };
@@ -13,6 +15,7 @@ JSTestFrame.prototype.shouldHaveBeen = JSTestFrame.prototype.should = function (
 JSTestFrame.prototype.shouldNotHaveBeen = JSTestFrame.prototype.shouldNot = function (fn, mapper) {
     mapper = mapper || JSTestFrame.DO_NOTHING;
     this.not = true;
+    this.and = this.shouldNot;
     fn.call(this, mapper(this.obj));
     return this;
 };

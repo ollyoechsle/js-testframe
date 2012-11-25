@@ -17,6 +17,18 @@ var notCalled = calledTimes(0),
     calledOnce = calledTimes(1),
     calledTwice = calledTimes(2);
 
+function calledWith() {
+    var expectedArguments = arguments;
+    return function (fn) {
+        this.ok(fn.called, "The fn should have been called");
+        for (var i = 0; i < expectedArguments.length; i++) {
+            this.equal(fn.getCall(fn.callCount - 1).args[i], expectedArguments[i],
+                       "The last call's argument at [" + i + "] should be correct");
+        }
+        fn.previousCallCount = fn.callCount;
+    }
+}
+
 JSTestFrame.addHandler(function (obj) {
     if (typeof obj === "function" && obj.callCount !== undefined) {
         return obj;

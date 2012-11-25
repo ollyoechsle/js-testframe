@@ -107,3 +107,7 @@ JSTestFrame.addHandler(function (obj) {
         return jQuery(obj);
     }
 });
+
+function theUserClicksOn(elem) {
+    jQuery(elem).trigger("click");
+}
