@@ -60,6 +60,7 @@ thenThe(jQuery('<tr><th data-id="1"></th><th data-id="2"></th><th data-id="3"></
 ```
 
 * haveClass(String)
+* haveClass(String...)
 * beThere
 * linkTo(String)
 * haveSize(Number)

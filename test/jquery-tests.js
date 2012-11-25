@@ -34,6 +34,15 @@
 
     });
 
+    test("has classes", function () {
+
+        expect(3);
+
+        thenThe(jQuery("<div><p class='a'>Apples</p><p class='b'>Bananas</p><p class='c'>Cherries</p></div>"))
+            .should(haveClass("a", "b", "c"), inElement("p"));
+
+    });
+
     test("has text", function () {
 
         expect(4);

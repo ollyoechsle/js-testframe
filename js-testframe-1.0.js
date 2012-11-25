@@ -59,10 +59,15 @@ function thenThe(elem) {
 var given = when = function (f) {
     return f;
 };
-function haveClass(className) {
+function haveClass() {
+    var classes = arguments;
     return function (elem) {
-        this.ok(elem.hasClass(className),
-                "The element " + elem.selector + " should have class `" + className + "`");
+        for (var i = 0; i < classes.length; i++) {
+            var expectedClassName = classes[i];
+            this.ok(elem.eq(i).hasClass(expectedClassName),
+                       "The element " + elem.selector + " should be have the right class but had `" + elem.eq(i)[0].className + "`");
+        }
+
     }
 }
 
@@ -87,6 +92,7 @@ function haveText() {
 
     }
 }
+
 function containText(expectedText) {
     return function (elem) {
         var text = elem.html();
