@@ -137,7 +137,24 @@ Full list of Sinon assertions:
 * calledTwice
 * calledTimes(Number)
 * calledAgain()
-* calledWith(Arguments...)
+* calledWith(Matchers...)
+
+### Matchers
+
+* eq()
+  Matches the argument exactly
+* mapWith(key, value)
+  Matches a map with the given key and value
+
+```
+given(fn = sinon.stub());
+
+when(fn(1, {foo: "bar"}));
+
+thenThe(jQuery.ajax)
+    .shouldHaveBeen(calledOnce)
+    .and(calledWith(mapWith("url", "http://www.foo.com"")));
+```
 
 Custom Assertions
 --------------

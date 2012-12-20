@@ -62,6 +62,18 @@
 
     });
 
+    test("called with argument", function () {
+
+        given(fn = sinon.stub());
+
+        when(fn(1, {foo: "bar"}));
+
+        thenThe(fn)
+            .shouldHaveBeen(calledOnce)
+            .and(calledWith(1, mapWith("foo", "bar")));
+
+    });
+
     var fn;
 
 })();
